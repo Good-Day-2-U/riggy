@@ -1,27 +1,117 @@
+:root {
+
+  --gridGap: 1rem;
+
+}
+
+
+
 body {
   height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+
+/* Game Body */
+
+.gameBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
+  height: fit-content;
+  width: fit-content;
+
+  background-color: lightgray;
+  border: 15px solid gray;
+  border-radius: 20px;
+}
+
 .mainDiv {
-  width: 8rem;
-  height: 2rem;
+  margin: 1rem;
+  padding: var(--gridGap);
+  width: auto;
+  height: auto;
   display: grid;
-  grid-template-columns: 2rem 2rem;
-  grid-template-rows: 2rem 2rem;
-  gap: 1rem;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  gap: var(--gridGap);
+  background-color: black;
 }
 
 .m {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 4rem;
+  height: 4rem;
   background-color: blue;
+}
+
+#m1 {
+  color: red;
+}
+
+#m2 {
+  color: yellow;
+}
+
+#m3 {
+  color: lightgreen;
+}
+
+#m4 {
+  color: cyan;
+}
+
+
+
+
+/* Buttons */
+
+.buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+.buttonDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 4rem;
+  /* background-color: aqua; */
+}
+
+#resetButton {
+  border-radius: 10px;
+  border: 3px solid black;
+  background-color: crimson;
+  color: white;
+}
+
+#resetButton:hover {
+  background-color: white;
+  color: black;
+  border-width: 6px;
+}
+
+#stopButton {
+  border-radius: 10px;
+  border: 3px solid black;
+  background-color: crimson;
+  color: white;
+}
+
+#stopButton:hover {
+  background-color: white;
+  color: black;
+  border-width: 6px;
 }
