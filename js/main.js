@@ -20,6 +20,8 @@ let box4 = document.querySelector('#m4');
 
 const maxScore = 10000
 
+let timerStop = false
+
 
 
 // Object
@@ -43,7 +45,14 @@ const ogBoxTwo = new OGm1(box2.style, box2.innerHTML)
 const ogBoxThree = new OGm1(box3.style, box3.innerHTML)
 const ogBoxFour = new OGm1(box4.style, box4.innerHTML)
 
-let changeColor = function(element) {
+box1.addEventListener('click', changeColor);
+box2.addEventListener('click', changeColor);
+box3.addEventListener('click', changeColor);
+box4.addEventListener('click', changeColor);
+
+function changeColor(event) {
+  let element = event.target
+
   if(element == box1 && scoreCount >= 1000 && element.style.backgroundColor != 'black') {
     element.style.backgroundColor = "black";
     element.innerHTML = '+5';
@@ -72,14 +81,13 @@ let changeColor = function(element) {
   }
 
   console.log(ogBoxOne.innerHTML);
-} 
-
+}
 
 // RESET BUTTON
 
 const resetButton = document.querySelector('#resetButton');
 
-let resetElements = function() {
+function resetElements() {
   box1.style = ogBoxOne.style;
   box1.innerHTML = ogBoxOne.innerHTML;
 
@@ -93,24 +101,49 @@ let resetElements = function() {
   box4.innerHTML = ogBoxFour.innerHTML;
 
   scoreCount = 0;
+
+  elapsedTime = 0;
+
   countRunning = true;
+  timerStop = false;
 
   console.log("RESET");
 }
+
+resetButton.addEventListener('click', resetElements);
+
+//  STOP BUTTON
+
+const stopButton = document.querySelector('#stopButton') 
 
 let stopElements = function() {
   if(countRunning == true) {
     countRunning = false;
     console.log('countRunning == false');
+    timerStop = true;
+    console.log('timerStop == true');
   }
 }
+
+stopButton.addEventListener('click', stopElements);
+
+//  SPEND BUTTON
+
+const spendButton = document.querySelector('#spendButton') 
+
 
 let spendScore = function() {
-  if(scoreCount >= 750) {
-    scoreCount -= 500;
+  if(scoreCount >= 200) {
+    scoreCount -= 200;
   }
 }
 
+spendButton.addEventListener('click', spendScore);
+
+
+
+
+// Upgrades----------------------------//
 
 let upgradeEffects = function() {
   // switch statement for upgrades
@@ -125,7 +158,6 @@ let upgradeEffects = function() {
 
 let lastTime = performance.now();
 let elapsedTime = 0;
-let varTime = 0;
 let displayTime = 0;
 
 // Timer Logic ---------------
@@ -135,10 +167,11 @@ let timer = document.querySelector('#timer');
 
 function updateTimer() {
 
-  displayTime = varTime
+  displayTime = elapsedTime
 
   if(displayTime >= 10) {
-    displayTime -= 10;
+    elapsedTime -= 10;
+    resetElements();
   }
 
   timer.innerHTML = (displayTime.toFixed(2));
@@ -156,12 +189,6 @@ function gameLoop() {
   let deltaTime = currentTime - lastTime;
   elapsedTime += (deltaTime / 1000);
   console.log('elapsedTime:', elapsedTime);
-
-  varTime = elapsedTime;
-  console.log('varTime:', varTime);
-  console.log('displayTime:', displayTime);
-
-
 
   //----------------------------------------// 
 
@@ -205,8 +232,9 @@ function gameLoop() {
 
   
   
-  
-  updateTimer()
+  if(timerStop == false) {
+    updateTimer()
+  }
 
   upgradeEffects()
   
