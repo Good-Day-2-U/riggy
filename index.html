@@ -10,7 +10,21 @@
   
 
   <div class="gameBody">
-    <div class="score">0</div>
+
+    <div class="timeBody">
+      <div id="timer">0</div>
+    </div>
+
+    <br>
+    
+    <div id="scoreDiv">
+      <div id="scoreTitle">Score:</div>
+      
+      <div class="score">0</div>
+    </div>
+
+    <br>
+    
     <div class="mainDiv">
       <div onclick="changeColor(this)" class="m" id="m1">1</div>
       <div onclick="changeColor(this)" class="m" id="m2">2</div>
@@ -24,10 +38,14 @@
       <div class="buttonDiv">
         <button onclick="stopElements()" id="stopButton">&nbsp;Stop!&nbsp;</button>
       </div>
+      <div class="buttonDiv">
+        <button onclick="spendScore()" id="spendButton">&nbsp;Purchase!&nbsp;</button>
+      </div>
     </div>
   </div>
 
 
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <!-- <script type="module" src="js/timer.js"></script> -->
 </body>
 </html>
