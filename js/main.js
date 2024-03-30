@@ -1,4 +1,9 @@
-// import {updateTimer} from './timer.js';
+// IMPORTS //
+
+import {changeBackGround} from './changeBackground.js';
+
+// EXPORTS //
+
 
 
 
@@ -14,6 +19,8 @@ let box1 = document.querySelector('#m1');
 let box2 = document.querySelector('#m2');
 let box3 = document.querySelector('#m3');
 let box4 = document.querySelector('#m4');
+
+let timer = document.querySelector('#timer');
 
 
 // Game Variables
@@ -60,16 +67,22 @@ function changeColor(event) {
 
     scoreCount -= 1000;
 
+    startElements()
+
   } else if(element == box2) {
     element.style.backgroundColor = "black";
     element.innerHTML = '+10'
     countRunning = true;
+
+    startElements()
 
 
   } else if(element == box3) {
     element.style.backgroundColor = "black";
     element.innerHTML = '+25'
     countRunning = true;
+
+    startElements()
   
   
   } else if(element == box4) {
@@ -77,6 +90,7 @@ function changeColor(event) {
     element.innerHTML = '+100'
     countRunning = true;
   
+    startElements()
   
   }
 
@@ -86,6 +100,8 @@ function changeColor(event) {
 // RESET BUTTON
 
 const resetButton = document.querySelector('#resetButton');
+
+resetButton.classList.add('animation360Spin')
 
 function resetElements() {
   box1.style = ogBoxOne.style;
@@ -110,14 +126,17 @@ function resetElements() {
   console.log("RESET");
 }
 
-resetButton.addEventListener('click', resetElements);
+resetButton.addEventListener('click', function() {
+  resetElements();
+  changeBackGround();
+});
 
 //  STOP BUTTON
 
-const stopButton = document.querySelector('#stopButton') 
+const stopButton = document.querySelector('#stopButton')
 
 let stopElements = function() {
-  if(countRunning == true) {
+  if(timerStop == false) {
     countRunning = false;
     console.log('countRunning == false');
     timerStop = true;
@@ -126,6 +145,22 @@ let stopElements = function() {
 }
 
 stopButton.addEventListener('click', stopElements);
+
+//  START BUTTON
+
+const startButton = document.querySelector('#startButton') 
+
+let startElements = function() {
+  if(timerStop == true) {
+    countRunning = true;
+    console.log('countRunning == true');
+    timerStop = false;
+    console.log('timerStop == false');
+    lastTime = performance.now();
+  }
+}
+
+startButton.addEventListener('click', startElements);
 
 //  SPEND BUTTON
 
@@ -156,30 +191,34 @@ let upgradeEffects = function() {
 
 // Game Logic ---------------------------------------------------------------------------//
 
-let lastTime = performance.now();
+let lastTime = 0;
 let elapsedTime = 0;
 let displayTime = 0;
 
 // Timer Logic ---------------
 
-
-let timer = document.querySelector('#timer');
+let elapsedTimeReset = false; // Flag to indicate if elapsedTime has been reset
 
 function updateTimer() {
+  displayTime = elapsedTime;
 
-  displayTime = elapsedTime
-
-  if(displayTime >= 10) {
-    elapsedTime -= 10;
-    resetElements();
+  if (displayTime >= 10) {
+    if (!elapsedTimeReset) { // Check if elapsedTime has been reset
+      elapsedTime -= 10; // Reset elapsedTime
+      elapsedTimeReset = true; // Set the flag
+      resetElements();
+    }
+  } else {
+    elapsedTimeReset = false; // Reset the flag when displayTime is less than 10
   }
-
-  timer.innerHTML = (displayTime.toFixed(2));
+  
+  timer.innerHTML = displayTime;
 }
 
 
+
 function gameLoop() {
-  // Update game state
+  // Update game stateA
 
 
 
@@ -187,8 +226,10 @@ function gameLoop() {
 
   let currentTime = performance.now();
   let deltaTime = currentTime - lastTime;
-  elapsedTime += (deltaTime / 1000);
-  console.log('elapsedTime:', elapsedTime);
+  if(timerStop == false) {
+    elapsedTime += (deltaTime / 1000);
+  }
+    // console.log('elapsedTime:', elapsedTime);
 
   //----------------------------------------// 
 
@@ -235,6 +276,8 @@ function gameLoop() {
   if(timerStop == false) {
     updateTimer()
   }
+
+  console.log(elapsedTime)
 
   upgradeEffects()
   
